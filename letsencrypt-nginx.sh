@@ -27,7 +27,7 @@ rsync -au /etc/nginx/snippets/ $REMOTE:$HOME/nginx/snippets &&\
 stty -echo; ssh $USER@$REMOTE "\
   sudo -S sh -c \"ln -sf /etc/nginx/sites-available/letsencrypt /etc/nginx/sites-enabled/ &&\
   rm -f /etc/nginx/sites-enabled/default &&\
-  nginx -t && sudo systemctl restart nginx &&\
+  nginx -t && systemctl restart nginx &&\
   letsencrypt certonly -a webroot --webroot-path=/var/www/html/ -d $REMOTE --agree-tos --agree-dev-preview --email $EMAIL\""
 
 # Let's copy the certificates to the local machine to install across multiple servers.
@@ -48,4 +48,4 @@ ssl_certificate_key /etc/letsencrypt/live/$REMOTE/privkey.pem;
 ' > /etc/nginx/snippets/ssl-$REMOTE.conf\""
 
 # Restart the nginx server.
-stty -echo; ssh $USER@$REMOTE "sudo -S nginx -t && sudo systemctl restart nginx"
+stty -echo; ssh $USER@$REMOTE "sudo -S sh -c \"nginx -t && systemctl restart nginx\""
