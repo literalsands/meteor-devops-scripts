@@ -1,8 +1,8 @@
 #!/bin/bash
-# Make sure the remote folder is ready.
-# {} weren't were being escaped so I made this straight forward.
-ssh $USER@$REMOTE "mkdir -p ~/bundles && mkdir -p ~/bundles/$DEPLOY"
 # Send zipped file over.
-rsync $HOME/.bundles/$APP-$DEPLOY.tar.gz $REMOTE:~/bundles/$DEPLOY.tar.gz
+rsync $HOME/.bundles/$APP-$DEPLOY.tar.gz $REMOTE_USER@$REMOTE:~/bundles/$APP-$DEPLOY.tar.gz
 # Unzip and build the bundle.
-ssh $USER@$REMOTE "tar -xzf ~/bundles/$DEPLOY.tar.gz -C ~/bundles/$DEPLOY && rm -f ~/bundle && ln -s ~/bundles/$DEPLOY/bundle ~ && cd ~/bundle/programs/server && npm install fibers && npm install"
+ssh $REMOTE_USER@$REMOTE "\
+  rm -rf /var/opt/node/$APP &&\
+  mkdir -p /var/opt/node/$APP &&\
+  tar -xzf ~/bundles/$APP-$DEPLOY.tar.gz -C /var/opt/node/$APP"
