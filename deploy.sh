@@ -1,6 +1,7 @@
 #!/bin/bash
 # Send zipped file over.
-rsync $HOME/.bundles/$APP-$DEPLOY.tar.gz $REMOTE_USER@$REMOTE:~/bundles/$APP-$DEPLOY.tar.gz
+ssh $REMOTE_USER@$REMOTE "mkdir -p ~/bundles"
+rsync -ua $HOME/.bundles/$APP-$DEPLOY.tar.gz $REMOTE_USER@$REMOTE:~/bundles/$APP-$DEPLOY.tar.gz
 # Unzip and build the bundle.
 ssh $REMOTE_USER@$REMOTE "\
   rm -rf /var/opt/node/$APP &&\
