@@ -6,8 +6,8 @@ if [[ $? -ne 4 ]]; then
     exit 1
 fi
 
-SHORT=pf:a:
-LONG=sudo,file:,options:
+SHORT=pf:a:e:
+LONG=sudo,file:,options:,environment:
 
 # -temporarily store output to be able to check for errors
 # -activate advanced mode getopt quoting e.g. via “--options”
@@ -26,6 +26,10 @@ eval set -- "$PARSED"
 # now enjoy the options in order and nicely split until we see --
 while true; do
     case "$1" in
+        -e|--environment)
+            e=$2
+            shift 2
+            ;;
         -p|--sudo)
             p=1
             shift
@@ -56,12 +60,12 @@ if [ $# -lt 1 ]; then
 fi
 
 while [ $# -gt 0 ]; do
-  echo "$1:$([ "${p:-0}" -eq 1 ] && echo " sudo") $f $a"
+  echo "$1:$([ "${p:-0}" -eq 1 ] && echo " sudo") $f $a $e"
   COMMAND=$(base64 -w0 $f)
   if [ "${p:-0}" -eq 1 ]; then
-    stty -echo; ssh -t $1 "echo $COMMAND | base64 -d | sudo bash -s \"$a\" "
+    stty -echo; ssh -t $1 "(export $e > /dev/null; echo $COMMAND | base64 -d | sudo -E bash -s \"$a\")"
   else
-    ssh $1 "echo $COMMAND | base64 -d | sudo bash -s \"$a\" "
+    ssh $1 "(export $e > /dev/null; echo $COMMAND | base64 -d | bash -s \"$a\")"
   fi
   shift
 done
