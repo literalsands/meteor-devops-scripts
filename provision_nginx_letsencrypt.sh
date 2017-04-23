@@ -17,12 +17,12 @@ fi
 
 # Create a configuration snippet for the website name.
 if ! [ -f /etc/nginx/snippets/ssl-$DOMAIN.conf ]; then
-  SSL_SNIPPET = "
+  echo "
 ssl on;
 ssl_certificate /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
 ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
-"
-  echo $SSL_SNIPPET > /etc/nginx/snippets/ssl-$DOMAIN.conf
+" > /etc/nginx/snippets/ssl-$DOMAIN.conf
+
   # Restart the nginx server.
   nginx -t && systemctl restart nginx
 fi

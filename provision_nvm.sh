@@ -8,4 +8,4 @@ curl -o- https://raw.githubusercontent.com/creationix/nvm/v$NVM_VERSION/install.
 #NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 nvm install $NODE_VERSION
-npm install pm2
+npm install pm2 -g
