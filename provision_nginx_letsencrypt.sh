@@ -7,8 +7,8 @@ ln -sf /etc/nginx/sites-available/letsencrypt /etc/nginx/sites-enabled/
 # Check nginx configuration and restart the server.
 nginx -t && systemctl restart nginx
 # Run letsencrypt with email address and accept license.
-echo " letsencrypt certonly -a webroot --webroot-path=/var/www/html/ -d $DOMAIN -d www.$DOMAIN --agree-tos --email $EMAIL "
-letsencrypt certonly -a webroot --webroot-path=/var/www/html/ -d $DOMAIN -d www.$DOMAIN --agree-tos --email $EMAIL
+echo " letsencrypt certonly -a webroot --webroot-path=/var/www/html/ -d $DOMAIN -d www.$DOMAIN --agree-tos --email $EMAIL --renew-by-default"
+letsencrypt certonly -a webroot --webroot-path=/var/www/html/ -d $DOMAIN -d www.$DOMAIN --agree-tos --email $EMAIL --renew-by-default
 
 # Create dhparam if it doesn't alrady exist.
 if ! [ -f /etc/ssl/certs/dhparam.pem ]; then
