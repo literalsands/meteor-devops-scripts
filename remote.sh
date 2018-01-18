@@ -1,13 +1,26 @@
 #!/bin/bash
 
+usage=$(cat <<END
+$0 remote-address [options...]
+
+Run a shell script at remote address.
+
+  -h,--help                             Display help.
+  -f,--file filename                    Shell script filename.
+  -o,--options options                  Options for shell script.
+  -e,--environment environment_string   Environment for shell script.
+  -p,--sudo                             Ask for sudo permissions.
+END
+)
+
 getopt --test > /dev/null
 if [[ $? -ne 4 ]]; then
     echo "I’m sorry, `getopt --test` failed in this environment."
     exit 1
 fi
 
-SHORT=pf:a:e:
-LONG=sudo,file:,options:,environment:
+SHORT=hpf:a:e:
+LONG=help,sudo,file:,options:,environment:
 
 # -temporarily store output to be able to check for errors
 # -activate advanced mode getopt quoting e.g. via “--options”
@@ -41,6 +54,10 @@ while true; do
         -a|--options)
             a=$2
             shift 2
+            ;;
+        -h|--help)
+            echo "$usage"
+            exit 0
             ;;
         --)
             shift
