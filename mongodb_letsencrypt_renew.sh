@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run the letsencrypt renewal process.
-/opt/letsencrypt/letsencrypt-auto certonly --standalone --agree-tos -m literalsands@gmail.com -d $(hostname) -n
+/opt/letsencrypt/letsencrypt-auto certonly --standalone --agree-tos -m $EMAIL -d $(hostname) -n
 # Create the key.
 cd /etc/letsencrypt/live/$(hostname)
 cat privkey.pem cert.pem > /etc/ssl/mongodb.pem
